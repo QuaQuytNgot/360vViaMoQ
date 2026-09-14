@@ -1,0 +1,9 @@
+configs/pipeline.env
+input/*
+!input/.gitkeep
+media/**
+!media/.gitkeep
+results/hardware_capabilities.txt
+results/codec_benchmark.csv
+results/gpu_logs/*
+!results/gpu_logs/.gitkeep
