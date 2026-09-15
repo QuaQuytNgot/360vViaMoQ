@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "moq-360-protocol-lab"
+version = "0.2.0"
+description = "Capability-gated experiment harness for tiled immersive MOQT draft-18 workloads"
+requires-python = ">=3.12"
+dependencies = [
+  "PyYAML==6.0.2",
+  "aiomoqt==0.10.6",
+  "aiopquic==0.3.11",
+]
+
+[project.optional-dependencies]
+# Historical implementation-comparison backend only.  It is never eligible
+# for a draft-18 result.
+moq-lite = [
+  "moq-rs==0.4.6",
+  "moq-ffi==0.3.16",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

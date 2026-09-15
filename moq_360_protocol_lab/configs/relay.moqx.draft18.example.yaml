@@ -1,0 +1,29 @@
+# Audited moqx candidate configuration. This is deliberately draft-18-only.
+# It is not proof that this candidate has passed the required local P1 smoke.
+listeners:
+  - name: draft18_only
+    udp:
+      socket:
+        address: "127.0.0.1"
+        port: 4433
+    tls:
+      insecure: true # Local development only. Never use this in a remote run.
+    endpoint: "/moq-relay"
+    moqt_versions: [18]
+
+service_defaults:
+  cache:
+    enabled: true
+    max_tracks: 100
+    max_groups_per_track: 3
+
+services:
+  local:
+    match:
+      - authority: {any: true}
+        path: {prefix: "/"}
+
+admin:
+  address: "127.0.0.1"
+  port: 8000
+  plaintext: true

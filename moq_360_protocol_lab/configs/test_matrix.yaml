@@ -1,0 +1,21 @@
+# A matrix only expands values explicitly supplied by the researcher.
+schema_version: 1
+matrix:
+  # P1 is the first primary experiment once its real-relay smoke is saved.
+  # P2/P3/P4 cannot be enabled by a matrix value alone; their native gates are
+  # deliberately separate. P5 is optional.
+  test_id: "" # P1, P2, P3, P4, or optional P5
+  repetitions:
+  factors:
+    track_count: []
+    bandwidth_mbps: []
+    rtt_ms: []
+    loss_percent: []
+    group_duration_ms: []
+    update_frequency_hz: [] # P2 only; leave empty until REQUEST_UPDATE is smoke-verified.
+  capability_gates:
+    P1: relay_p1_smoke
+    P2: request_update + subscriber_priority + relay_p2_smoke
+    P3: object_delivery_timeout + subgroup_delivery_timeout + relay_p3_smoke
+    P4: forward + request_update + relay_forward + relay_cache + relay_fanout + relay_p4_smoke
+    P5: fetch + joining_fetch + relay_p5_smoke # Optional.

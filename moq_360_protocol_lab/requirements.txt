@@ -1,0 +1,5 @@
+# Primary research backend. Re-audit this lock against docs/AIOMOQT_API_AUDIT.md
+# before updating it: draft-18 support is beta and must not silently fall back.
+PyYAML==6.0.2
+aiomoqt==0.10.6
+aiopquic==0.3.11

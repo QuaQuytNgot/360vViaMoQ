@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+.relay-src/
+.relay-build/
+.pytest_cache/
+configs/capabilities.json
+results/*/run_*/
+results/raw/*
+results/processed/*
+results/metadata/*
+!results/raw/.gitkeep
+!results/processed/.gitkeep
+!results/metadata/.gitkeep

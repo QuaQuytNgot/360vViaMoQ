@@ -1,0 +1,7 @@
+# Historical moq-lite relay record only. Draft-18 runs use the explicit YAML
+# example in relay.moqx.draft18.example.yaml and start_relay.sh.
+[relay]
+backend = "moq_lite"
+executable = ""
+version = ""
+source_commit = ""

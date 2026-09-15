@@ -1,0 +1,4 @@
+# Historical / sanity-comparison backend only. Never mix these outputs with
+# draft-18 results.
+moq-rs==0.4.6
+moq-ffi==0.3.16

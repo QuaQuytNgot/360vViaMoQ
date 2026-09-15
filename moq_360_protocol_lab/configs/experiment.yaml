@@ -1,0 +1,72 @@
+# Copy and fill this file for a run. Empty values are deliberate: no research
+# workload, network, or timing parameters are selected by this repository.
+schema_version: 1
+
+protocol:
+  backend: moqt18
+  draft: 18
+  transport: raw_quic
+
+relay:
+  implementation: "" # A pinned real draft-18 relay only; aiomoqt's interop relay is smoke-only.
+  version: ""
+  commit: ""
+  address: ""
+  port:
+  path: /moq-relay
+  verify_tls: true
+  probe_timeout_s: 10
+  build_flags: []
+
+experiment:
+  test_id: "" # P1 through P5, selected by the researcher.
+  name: ""
+  duration_s:
+  repetitions:
+  seed:
+
+runtime:
+  mode: "" # synthetic_plan, event_replay, or live
+  adapter_id: ""
+  relay_command: [] # Literal argv, not a shell string.
+
+workload:
+  media_mode: "" # synthetic or media; synthetic is the primary initial mode.
+  media_manifest: "" # Required for media mode; build with media_manifest.py.
+  track_count:
+  track_ids: []
+  tile_ids: []
+  aggregate_bitrate_bps:
+  per_track_bitrate_bps: []
+  group_duration_ms:
+  group_count:
+  objects_per_group:
+  seed: ""
+  mapping:
+    track: tile
+    group: media_fragment
+    object: encoded_chunk
+  viewport_requirements: []
+
+network:
+  interface: ""
+  bandwidth_mbps:
+  rtt_ms:
+  loss_percent:
+  jitter_ms:
+  queue_limit:
+  applied_commands: [] # Exact argv/commands captured from the actual shaping setup.
+
+moq:
+  subscriber_priority:
+  publisher_priority:
+  object_delivery_timeout_ms:
+  subgroup_delivery_timeout_ms:
+  forward:
+
+playback:
+  deadline_ms:
+
+capture:
+  transport_sample_interval_ms:
+  clock_mode: monotonic_ns

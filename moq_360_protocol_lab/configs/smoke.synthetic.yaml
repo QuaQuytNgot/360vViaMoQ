@@ -1,0 +1,47 @@
+# Non-research harness smoke. Every value is explicit so it cannot be mistaken
+# for a hidden research default. It creates no network traffic or MOQT claim.
+schema_version: 1
+
+protocol:
+  backend: moqt18
+  draft: 18
+  transport: raw_quic
+
+experiment:
+  test_id: P1
+  name: synthetic-harness-smoke
+  duration_s: 1
+  repetitions: 1
+  seed: harness-smoke
+
+runtime:
+  mode: synthetic_plan
+  adapter_id: none
+
+workload:
+  media_mode: synthetic
+  track_count: 1
+  track_ids: [track_0]
+  tile_ids: [tile_0]
+  aggregate_bitrate_bps: 8000
+  per_track_bitrate_bps: [8000]
+  group_duration_ms: 10
+  group_count: 10
+  objects_per_group: 1
+  seed: harness-smoke
+  mapping:
+    track: tile
+    group: media_fragment
+    object: encoded_chunk
+
+network:
+  interface: none
+  bandwidth_mbps:
+  rtt_ms:
+  loss_percent:
+  jitter_ms:
+  queue_limit:
+  applied_commands: []
+
+playback:
+  deadline_ms:

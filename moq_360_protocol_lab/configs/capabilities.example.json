@@ -1,0 +1,149 @@
+{
+  "schema_version": 2,
+  "audit_date": "2026-09-15",
+  "selected_protocol": {
+    "id": "draft-ietf-moq-transport-18",
+    "draft": 18,
+    "publication_date": "2026-05-12",
+    "transport": "raw_quic",
+    "alpn": "moqt-18",
+    "url": "https://www.ietf.org/archive/id/draft-ietf-moq-transport-18.html"
+  },
+  "backends": {
+    "moqt18": {
+      "implementation": "aiomoqt",
+      "aiomoqt_version": "0.10.6",
+      "aiopquic_version": "0.3.11",
+      "python_requires": ">=3.12",
+      "wire_protocol": "moqt-18",
+      "transport": "raw_quic",
+      "notes": "A single draft-18 offer is mandatory. Do not use aiomoqt's multi-draft default in research runs."
+    },
+    "moq_lite": {
+      "implementation": "moq-rs",
+      "moq_rs_version": "0.4.6",
+      "moq_ffi_version": "0.3.16",
+      "wire_protocol": "moq-lite-05",
+      "transport": "raw_quic",
+      "notes": "Historical/sanity comparison only; it is never a draft-18 result."
+    }
+  },
+  "relay_candidate": {
+    "implementation": "moqx",
+    "repository": "https://github.com/openmoq/moqx.git",
+    "commit": "502b6b8f9ddbf4e61f5efe41e92a3d1df40df3a6",
+    "moxygen_commit": "70d28f5e796018efb0f5138d538ac7388df72f4c",
+    "selected_for_protocol_claims": false,
+    "reason": "Source audit found cache/fan-out/metrics and opt-in draft-18 code paths, but its own default and documented support remain drafts 14/16. No local draft-18 relay media-path smoke has passed."
+  },
+  "features": {
+    "raw_quic": {
+      "status": "verified",
+      "native_mapping": "MOQTClient(..., use_quic=True, supported_drafts=18)",
+      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p1"],
+      "notes": "Package draft-18 raw-QUIC loopback handshake and object tests passed in an isolated environment."
+    },
+    "publish": {
+      "status": "verified",
+      "native_mapping": "MOQTSessionQuic.publish; PublishedTrack",
+      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p1"]
+    },
+    "subscribe": {
+      "status": "verified",
+      "native_mapping": "MOQTSessionQuic.subscribe; SubscribedTrack",
+      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p1"]
+    },
+    "subgroup_object": {
+      "status": "verified",
+      "native_mapping": "MOQTSessionQuic.subgroup_header; SubgroupHeader.next_object",
+      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p1"]
+    },
+    "priority": {
+      "status": "verified",
+      "native_mapping": "subscribe(priority=...); SubgroupHeader(publisher_priority=...)",
+      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p1"],
+      "notes": "Initial priority is source/API verified. It is not evidence of a relay scheduling result."
+    },
+    "request_update": {
+      "status": "wire_only",
+      "native_mapping": "aiomoqt.messages.request.RequestUpdate",
+      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p2"],
+      "notes": "Serializer/parser exist, but no public, conformant sender on an existing draft-18 request bidi stream was found."
+    },
+    "subscriber_priority": {
+      "status": "wire_only",
+      "native_mapping": "ParamType.SUBSCRIBER_PRIORITY",
+      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p2"],
+      "notes": "Initial SUBSCRIBE priority is exposed; dynamic REQUEST_UPDATE priority is not runnable."
+    },
+    "object_delivery_timeout": {
+      "status": "wire_only",
+      "native_mapping": "ParamType.DELIVERY_TIMEOUT (0x02)",
+      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p3"],
+      "notes": "No public native timeout behavior or expiry/reset observation surface was found."
+    },
+    "subgroup_delivery_timeout": {
+      "status": "unsupported",
+      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p3"],
+      "notes": "Draft-18 property/parameter 0x06 is absent from the audited aiomoqt public source."
+    },
+    "forward": {
+      "status": "verified",
+      "native_mapping": "publish(..., forward=...); subscribe(..., forward=...)",
+      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p4"],
+      "notes": "Initial Forward state only. Runtime toggling needs unsupported REQUEST_UPDATE." 
+    },
+    "fetch": {
+      "status": "wire_only",
+      "native_mapping": "MOQTSessionQuic.fetch",
+      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p5"],
+      "notes": "Public method and draft-18 serializer/parser exist; no draft-18 relay FETCH smoke is saved."
+    },
+    "joining_fetch": {
+      "status": "wire_only",
+      "native_mapping": "MOQTSessionQuic.join",
+      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p5"],
+      "notes": "Public method and draft-18 serializer/parser exist; no draft-18 relay joining-FETCH smoke is saved."
+    },
+    "relay_p1_smoke": {
+      "status": "unverified",
+      "evidence": ["docs/RELAY_AUDIT.md"],
+      "notes": "Requires a pinned local relay handshake plus 10 deterministic Group pub/sub/payload smoke."
+    },
+    "relay_p2_smoke": {
+      "status": "blocked",
+      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p2"],
+      "notes": "Blocked by missing conformant aiomoqt REQUEST_UPDATE sender."
+    },
+    "relay_p3_smoke": {
+      "status": "blocked",
+      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p3"],
+      "notes": "Blocked by missing native timeout API/behavior."
+    },
+    "relay_forward": {
+      "status": "unverified",
+      "evidence": ["docs/RELAY_AUDIT.md"],
+      "notes": "Candidate source has forward code, but no pinned local draft-18 smoke passed."
+    },
+    "relay_cache": {
+      "status": "unverified",
+      "evidence": ["docs/RELAY_AUDIT.md"],
+      "notes": "Candidate source has cache and metrics, but cache reuse is not yet measured under draft-18."
+    },
+    "relay_fanout": {
+      "status": "unverified",
+      "evidence": ["docs/RELAY_AUDIT.md"],
+      "notes": "Candidate source has fan-out code/metrics, but no multi-subscriber draft-18 smoke passed."
+    },
+    "relay_p4_smoke": {
+      "status": "blocked",
+      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p2", "docs/RELAY_AUDIT.md"],
+      "notes": "P4 requires a proven relay and dynamic Forward updates; neither prerequisite is complete."
+    },
+    "relay_p5_smoke": {
+      "status": "unverified",
+      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p5"],
+      "notes": "Requires a pinned local draft-18 relay FETCH/joining-FETCH smoke."
+    }
+  }
+}
