@@ -8,13 +8,13 @@ from pathlib import Path
 from typing import Iterable, Mapping, Sequence
 
 from .models import ObjectDelivery, PlannedObject
-from .stats import percentile
+from .stats import percentile, summarize
 
 
 OBJECT_COLUMNS = [
     "run_id", "user_id", "track_id", "tile_id", "group_id", "object_id",
     "scheduled_publish_ts_ns", "actual_publish_ts_ns", "first_receive_ts_ns",
-    "complete_receive_ts_ns", "payload_bytes", "completed", "dropped", "expired",
+    "complete_receive_ts_ns", "payload_bytes", "completed", "missing", "duplicate", "dropped", "expired",
     "reset", "out_of_order", "subscriber_priority", "publisher_priority", "provenance",
 ]
 
@@ -52,6 +52,8 @@ def normalize_deliveries(
         elif event_type == "completed":
             entry["complete_receive_ts_ns"] = timestamp
             entry["completed"] = True
+        elif event_type == "duplicate":
+            entry["duplicate"] = True
         elif event_type in {"dropped", "expired", "reset"}:
             entry[str(event_type)] = True
     rows: list[ObjectDelivery] = []
@@ -65,6 +67,7 @@ def normalize_deliveries(
             first_receive_ts_ns=_int_or_none(data.get("first_receive_ts_ns")),
             complete_receive_ts_ns=_int_or_none(data.get("complete_receive_ts_ns")),
             payload_bytes=item.payload_bytes, completed=bool(data.get("completed")),
+            missing=not bool(data.get("completed")), duplicate=bool(data.get("duplicate")),
             dropped=bool(data.get("dropped")), expired=bool(data.get("expired")), reset=bool(data.get("reset")),
             out_of_order=bool(data.get("out_of_order")), provenance="normalized_event_log",
         ))
@@ -196,13 +199,15 @@ def p1_summary(rows: Iterable[ObjectDelivery], required_tile_ids: Sequence[str],
             if materialized else None
         ),
         "cross_tile_completion_skew_ns": cross_tile_skew_ns(materialized, required_tile_ids),
-        "completion_latency_ns": {
-            "count": len(latencies),
-            "p50": percentile(latencies, 0.50),
-            "p95": percentile(latencies, 0.95),
-            "p99": percentile(latencies, 0.99),
-        },
+        "completion_latency_ns": summarize(latencies),
     }
+    # Keep the historic p50 spelling while adding the P1-required median and
+    # standard deviation fields supplied by summarize().
+    latency = result["completion_latency_ns"]
+    assert isinstance(latency, dict)
+    latency["p50"] = percentile(latencies, 0.50)
+    skew_values = [value for value in result["cross_tile_completion_skew_ns"].values() if value is not None]  # type: ignore[index,union-attr]
+    result["cross_track_completion_skew_ns"] = summarize(skew_values)
     if deadline_ns is not None:
         result["deadline_miss_ratio"] = deadline_miss_ratio(materialized, deadline_ns, end_ts_ns)
     return result

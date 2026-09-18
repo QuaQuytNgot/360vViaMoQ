@@ -86,6 +86,15 @@ def validate_for_run(config: Mapping[str, Any]) -> list[str]:
             required.append("workload.media_manifest")
         elif media_mode not in {None, ""}:
             errors.append("workload.media_mode must be synthetic or media")
+        total_mbps = nested_get(config, "workload.total_offered_bitrate_mbps")
+        rates = nested_get(config, "workload.per_track_bitrate_bps")
+        if total_mbps is not None:
+            if not isinstance(total_mbps, (int, float)) or isinstance(total_mbps, bool) or total_mbps <= 0:
+                errors.append("workload.total_offered_bitrate_mbps must be a positive number")
+            elif isinstance(rates, list) and all(isinstance(rate, int) for rate in rates):
+                expected_bps = total_mbps * 1_000_000
+                if abs(sum(rates) - expected_bps) > max(1, expected_bps * 0.001):
+                    errors.append("workload.per_track_bitrate_bps must sum to workload.total_offered_bitrate_mbps (within 0.1%)")
     for key in required:
         value = nested_get(config, key)
         if value is None or value == "" or value == []:

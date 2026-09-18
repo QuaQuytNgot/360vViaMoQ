@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="752">
+<style>text{font:14px sans-serif}.bar{fill:#3973ac}.na{fill:#777}</style>
+<text x="20" y="28">Mode → first useful Object latency (ns)</text>
+<text x="20" y="70">forward_f1/user_0</text>
+<rect class="na" x="220" y="55" width="0" height="18"/>
+<text x="850" y="70" text-anchor="end">NA</text>
+<text x="20" y="100">forward_f1/user_0</text>
+<rect class="na" x="220" y="85" width="0" height="18"/>
+<text x="850" y="100" text-anchor="end">NA</text>
+<text x="20" y="130">forward_f1/user_0</text>
+<rect class="na" x="220" y="115" width="0" height="18"/>
+<text x="850" y="130" text-anchor="end">NA</text>
+<text x="20" y="160">forward_f0/user_0</text>
+<rect class="na" x="220" y="145" width="0" height="18"/>
+<text x="850" y="160" text-anchor="end">NA</text>
+<text x="20" y="190">forward_f0/user_0</text>
+<rect class="na" x="220" y="175" width="0" height="18"/>
+<text x="850" y="190" text-anchor="end">NA</text>
+<text x="20" y="220">forward_f0/user_0</text>
+<rect class="na" x="220" y="205" width="0" height="18"/>
+<text x="850" y="220" text-anchor="end">NA</text>
+<text x="20" y="250">forward_0_to_1/user_0</text>
+<rect class="bar" x="220" y="235" width="66" height="18"/>
+<text x="850" y="250" text-anchor="end">58176353.000</text>
+<text x="20" y="280">forward_0_to_1/user_0</text>
+<rect class="bar" x="220" y="265" width="66" height="18"/>
+<text x="850" y="280" text-anchor="end">58297379.000</text>
+<text x="20" y="310">forward_0_to_1/user_0</text>
+<rect class="bar" x="220" y="295" width="67" height="18"/>
+<text x="850" y="310" text-anchor="end">58993526.000</text>
+<text x="20" y="340">forward_1_to_0/user_0</text>
+<rect class="na" x="220" y="325" width="0" height="18"/>
+<text x="850" y="340" text-anchor="end">NA</text>
+<text x="20" y="370">forward_1_to_0/user_0</text>
+<rect class="na" x="220" y="355" width="0" height="18"/>
+<text x="850" y="370" text-anchor="end">NA</text>
+<text x="20" y="400">forward_1_to_0/user_0</text>
+<rect class="na" x="220" y="385" width="0" height="18"/>
+<text x="850" y="400" text-anchor="end">NA</text>
+<text x="20" y="430">fanout/user_a</text>
+<rect class="bar" x="220" y="415" width="48" height="18"/>
+<text x="850" y="430" text-anchor="end">42503320.000</text>
+<text x="20" y="460">fanout/user_b</text>
+<rect class="bar" x="220" y="445" width="48" height="18"/>
+<text x="850" y="460" text-anchor="end">42130552.000</text>
+<text x="20" y="490">fanout/user_a</text>
+<rect class="bar" x="220" y="475" width="48" height="18"/>
+<text x="850" y="490" text-anchor="end">42469238.000</text>
+<text x="20" y="520">fanout/user_b</text>
+<rect class="bar" x="220" y="505" width="48" height="18"/>
+<text x="850" y="520" text-anchor="end">42756907.000</text>
+<text x="20" y="550">fanout/user_a</text>
+<rect class="bar" x="220" y="535" width="47" height="18"/>
+<text x="850" y="550" text-anchor="end">41200956.000</text>
+<text x="20" y="580">fanout/user_b</text>
+<rect class="bar" x="220" y="565" width="48" height="18"/>
+<text x="850" y="580" text-anchor="end">42554416.000</text>
+<text x="20" y="610">reactive/user_0</text>
+<rect class="bar" x="220" y="595" width="48" height="18"/>
+<text x="850" y="610" text-anchor="end">42766243.000</text>
+<text x="20" y="640">reactive/user_0</text>
+<rect class="bar" x="220" y="625" width="620" height="18"/>
+<text x="850" y="640" text-anchor="end">543074426.000</text>
+<text x="20" y="670">reactive/user_0</text>
+<rect class="bar" x="220" y="655" width="48" height="18"/>
+<text x="850" y="670" text-anchor="end">42588751.000</text>
+</svg>

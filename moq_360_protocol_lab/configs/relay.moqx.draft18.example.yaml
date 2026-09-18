@@ -10,6 +10,13 @@ listeners:
       insecure: true # Local development only. Never use this in a remote run.
     endpoint: "/moq-relay"
     moqt_versions: [18]
+    # P1 uses one client-initiated bidirectional control stream per Track
+    # subscription.  The moqx default is 16, which makes a 24-Track run time
+    # out at the 17th SUBSCRIBE even though the relay otherwise interoperates.
+    # Keep this explicit so the qualifying configuration supports the P1
+    # matrix without changing the MOQT draft or transport semantics.
+    quic:
+      max_bidi_streams: 64
 
 service_defaults:
   cache:

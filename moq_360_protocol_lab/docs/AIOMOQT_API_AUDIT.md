@@ -38,8 +38,8 @@ smoke.
 |---|---|---|---|---|---|---|---|
 | Track/Subgroup | yes | `messages/track.py: SubgroupHeader` | `publish`, `subscribe`, `subgroup_header` | d18 loopback objects | not audited/unused | no selected relay | source-ready; P1 smoke pending |
 | Priority | yes | draft profile parameter codec | `subscribe(priority=...)`; publish subgroup priority | API/loopback path | not audited/unused | no scheduler smoke | initial values only |
-| `REQUEST_UPDATE` | yes | `messages/request.py: RequestUpdate` | no conformant sender | codec only | not audited/unused | no selected relay | blocked |
-| `SUBSCRIBER_PRIORITY` | yes | `types.py: ParamType.SUBSCRIBER_PRIORITY`; `context.py: DraftProfile` | initial subscribe priority only | no dynamic wire test | not audited/unused | no selected relay | blocked for P2 |
+| `REQUEST_UPDATE` | yes | `messages/request.py: RequestUpdate` | project-local d18 stream wrapper | wire test | not audited/unused | two-direction P2 relay smoke | smoke-verified for P2 |
+| `SUBSCRIBER_PRIORITY` | yes | `types.py: ParamType.SUBSCRIBER_PRIORITY`; `context.py: DraftProfile` | initial subscribe plus project-local update wrapper | dynamic wire test | not audited/unused | static/dynamic P2 relay smoke | smoke-verified for P2 |
 | `OBJECT_DELIVERY_TIMEOUT` | yes (`0x02`) | `types.py: ParamType.DELIVERY_TIMEOUT` | no | no native behavior test | not audited/unused | no selected relay | blocked |
 | `SUBGROUP_DELIVERY_TIMEOUT` | draft-18 `0x06` | absent in audited source | no | no | not audited/unused | no selected relay | blocked |
 | initial `FORWARD` | yes (`0x10`) | draft parameter codec | `publish(... forward=...)`, `subscribe(... forward=...)` | no d18 relay behavior smoke | not audited/unused | candidate only | incomplete |
@@ -61,16 +61,21 @@ smoke.
 
 | Item | Wire type | Serializer/parser | Public method | Raw QUIC test | Result |
 |---|---|---|---|---|---|
-| `REQUEST_UPDATE` | yes, `messages/request.py: RequestUpdate` | yes, draft-18 omits `existing_request_id` | **no** | codec only | blocked |
-| `SUBSCRIBER_PRIORITY` | yes, `types.py: ParamType.SUBSCRIBER_PRIORITY` | yes, uint8 under `context.py: DraftProfile` | initial `subscribe(priority=...)` only | no dynamic update test | blocked |
+| `REQUEST_UPDATE` | yes, `messages/request.py: RequestUpdate` | yes, draft-18 omits `existing_request_id` | `aiomoqt_d18_update.send_subscriber_priority_update()` | explicit d18 wire test | P2 two-direction relay smoke passed |
+| `SUBSCRIBER_PRIORITY` | yes, `types.py: ParamType.SUBSCRIBER_PRIORITY` | yes, uint8 under `context.py: DraftProfile` | initial `subscribe(priority=...)` plus update wrapper | explicit d18 wire test | static/dynamic P2 relay smoke passed |
 
 Draft-18 requires `REQUEST_UPDATE` to travel on the **same bidi stream** as the
 request it updates and requires exactly one response. In the audited source,
 `MOQTSessionQuic._REQUEST_OPENERS` excludes `RequestUpdate`, and no public
 `request_update()` method exists. Calling `send_control_message()` would use the
-wrong stream, so this lab does not create an adapter that does that. A future
-upstream-compatible implementation must add a public sender plus an end-to-end
-test before P2 is enabled.
+wrong stream. The project-local wrapper sends the codec object through
+`send_stream_message()` on the established subscription stream, with a fresh
+request ID. It permits only one in-flight update per subscription because the
+released response demux exposes the stream's original request ID. See
+`docs/P2_REQUEST_UPDATE_AUDIT.md` and `tests/test_aiomoqt_d18_update.py`.
+The end-to-end isolated relay smoke now passes in both directions; see
+`docs/P2_REQUEST_UPDATE_AUDIT.md`. This is a project-local, pinned extension,
+not a claim that aiomoqt itself exposes a public `request_update()` method.
 
 ## P3
 

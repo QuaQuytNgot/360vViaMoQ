@@ -1,0 +1,61 @@
+# Copy this only after the pinned moqx build and strict probe succeed.
+# This is a real, relay-mediated P1 smoke — not the harness-only smoke file.
+schema_version: 1
+
+protocol:
+  backend: moqt18
+  draft: 18
+  transport: raw_quic
+
+relay:
+  implementation: moqx
+  version: pinned-source
+  commit: 502b6b8f9ddbf4e61f5efe41e92a3d1df40df3a6
+  address: 127.0.0.1
+  port: 4433
+  path: /moq-relay
+  verify_tls: false
+
+experiment:
+  test_id: P1
+  name: draft18-relay-p1-smoke
+  duration_s: 13
+  repetitions: 1
+  seed: p1-smoke-v1
+
+runtime:
+  mode: live
+  operation: p1_smoke
+  adapter_id: Moqt18P1Adapter
+  subscriber_id: subscriber_0
+  start_delay_ms: 3000
+  connect_timeout_s: 15
+  receive_timeout_s: 20
+  # Exact file passed to scripts/start_relay.sh --log-file.
+  relay_log_path: .relay-src/moqx/logs/p1-smoke-relay.log
+
+workload:
+  media_mode: synthetic
+  track_count: 1
+  track_ids: [track_0]
+  tile_ids: [tile_0]
+  total_offered_bitrate_mbps: 1
+  aggregate_bitrate_bps: 1000000
+  per_track_bitrate_bps: [1000000]
+  group_duration_ms: 1000
+  group_count: 10
+  objects_per_group: 1
+  seed: p1-smoke-v1
+  mapping: {track: tile, group: media_fragment, object: deterministic_payload}
+
+network:
+  interface: loopback
+  bandwidth_mbps:
+  rtt_ms:
+  loss_percent:
+  jitter_ms:
+  queue_limit:
+  applied_commands: []
+
+playback:
+  deadline_ms: 3000

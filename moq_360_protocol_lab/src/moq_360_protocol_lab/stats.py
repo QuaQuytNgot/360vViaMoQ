@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import math
-from statistics import mean, median
+from statistics import mean, median, stdev
 from typing import Iterable, Optional
 
 
@@ -24,11 +24,12 @@ def percentile(values: Iterable[float], fraction: float) -> Optional[float]:
 def summarize(values: Iterable[float]) -> dict[str, Optional[float] | int]:
     samples = [float(value) for value in values]
     if not samples:
-        return {"count": 0, "mean": None, "median": None, "p95": None, "p99": None, "min": None, "max": None}
+        return {"count": 0, "mean": None, "median": None, "stddev": None, "p95": None, "p99": None, "min": None, "max": None}
     return {
         "count": len(samples),
         "mean": mean(samples),
         "median": median(samples),
+        "stddev": stdev(samples) if len(samples) > 1 else 0.0,
         "p95": percentile(samples, 0.95),
         "p99": percentile(samples, 0.99),
         "min": min(samples),

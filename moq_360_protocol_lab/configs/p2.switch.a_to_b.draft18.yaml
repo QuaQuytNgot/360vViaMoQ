@@ -1,0 +1,9 @@
+schema_version: 1
+protocol: {backend: moqt18, draft: 18, transport: raw_quic}
+relay: {implementation: moqx, version: pinned-source, commit: 502b6b8f9ddbf4e61f5efe41e92a3d1df40df3a6, address: 10.253.1.1, publisher_address: 10.253.1.1, subscriber_address: 10.253.2.1, port: 4433, path: /moq-relay, verify_tls: false}
+experiment: {test_id: P2, name: p2-single-switch-a-to-b, duration_s: 16, repetitions: 1, seed: p2-switch-v1}
+runtime: {mode: live, operation: p2_single_switch, adapter_id: Moqt18P2Adapter, subscriber_id: subscriber_0, start_delay_ms: 4000, connect_timeout_s: 15, receive_timeout_s: 30, relay_log_path: /tmp/moq-p2-relay.log}
+workload: {media_mode: synthetic, track_count: 2, track_ids: [track_a, track_b], tile_ids: [tile_a, tile_b], total_offered_bitrate_mbps: 24, aggregate_bitrate_bps: 24000000, per_track_bitrate_bps: [12000000, 12000000], group_duration_ms: 1000, group_count: 12, objects_per_group: 20, seed: p2-switch-v1, mapping: {track: tile, group: media_fragment, object: deterministic_payload}}
+network: {interface: p2rels0, bandwidth_mbps: 19.2, rtt_ms: 5, loss_percent: 0, jitter_ms: 0, queue_limit: 1000, applied_commands: [scripts/apply_p2_shaping.sh]}
+playback: {deadline_ms: 3000}
+p2: {object_interval_ms: 50, initial_priorities: {track_a: 0, track_b: 255}, updated_priorities: {track_a: 255, track_b: 0}, switch_at_ms: 5000, update_timeout_s: 5, rolling_window_ms: 500, dominance_threshold: 0.70}

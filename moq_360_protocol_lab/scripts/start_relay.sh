@@ -24,6 +24,9 @@ done
 [[ -f "$config" ]] || { printf 'Relay config does not exist: %s\n' "$config" >&2; exit 1; }
 [[ ! -e "$pid_file" ]] || { printf 'PID file already exists: %s\n' "$pid_file" >&2; exit 1; }
 mkdir -p "$(dirname "$pid_file")" "$(dirname "$log_file")"
-"$binary" --config "$config" >"$log_file" 2>&1 &
+# `setsid` keeps the intentional relay daemon alive when this launcher is run
+# from a non-interactive harness whose shell process group is cleaned up at
+# command completion.  `stop_relay.sh` still owns the PID-file shutdown path.
+setsid "$binary" --config "$config" >"$log_file" 2>&1 < /dev/null &
 printf '%s\n' "$!" >"$pid_file"
 printf 'Started relay PID %s; log: %s\n' "$(<"$pid_file")" "$log_file"

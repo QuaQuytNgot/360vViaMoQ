@@ -26,7 +26,6 @@ class CapabilityTests(unittest.TestCase):
             }), encoding="utf-8")
             gate = gate_test("P2", "live", path, probe_succeeded=True)
             self.assertFalse(gate.runnable)
-            self.assertIn("request_update: unavailable in the installed public backend API", gate.reasons)
             self.assertIn("relay_p2_smoke: blocked", gate.reasons)
 
 

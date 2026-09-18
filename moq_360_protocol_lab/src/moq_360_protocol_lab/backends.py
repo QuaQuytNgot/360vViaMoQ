@@ -119,16 +119,23 @@ class Moqt18Backend(ProtocolBackend):
         runtime = self.runtime_info()
         public = runtime["symbols"]
         available = bool(runtime["module_imported"])
+        try:
+            from .aiomoqt_d18_update import send_subscriber_priority_update
+            local_d18_update = callable(send_subscriber_priority_update)
+        except ImportError:
+            local_d18_update = False
         return {
             "raw_quic": available and bool(public.get("MOQTClient")),
             "subscribe": available and bool(public.get("session.subscribe")),
             "publish": available and bool(public.get("session.publish")),
             "subgroup_object": available and bool(public.get("session.subgroup_header")),
             "priority": available and bool(public.get("session.subscribe.priority")),
-            # aiomoqt 0.10.6 has a wire codec but does not expose a conformant
-            # sender for a d18 update on an existing request bidi stream.
-            "request_update": False,
-            "subscriber_priority": False,
+            # aiomoqt 0.10.6 lacks a public sender.  The project-local,
+            # version-pinned wrapper is deliberately audited and smoke-tested
+            # separately; it uses the existing request bidi stream rather
+            # than inventing a new control-plane API.
+            "request_update": available and local_d18_update,
+            "subscriber_priority": available and local_d18_update,
             # It serializes object timeout parameter 0x02 but exposes neither
             # native expiry action nor subgroup timeout property 0x06.
             "object_delivery_timeout": False,

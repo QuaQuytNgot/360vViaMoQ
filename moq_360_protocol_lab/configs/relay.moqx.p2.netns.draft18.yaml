@@ -1,0 +1,30 @@
+# Local P2 relay. Run only inside the isolated moq-p2-relay namespace.
+listeners:
+  - name: draft18_p2_only
+    udp:
+      socket:
+        address: "0.0.0.0"
+        port: 4433
+    tls:
+      insecure: true
+    endpoint: "/moq-relay"
+    moqt_versions: [18]
+    quic:
+      max_bidi_streams: 64
+
+service_defaults:
+  cache:
+    enabled: true
+    max_tracks: 100
+    max_groups_per_track: 3
+
+services:
+  local:
+    match:
+      - authority: {any: true}
+        path: {prefix: "/"}
+
+admin:
+  address: "127.0.0.1"
+  port: 8000
+  plaintext: true

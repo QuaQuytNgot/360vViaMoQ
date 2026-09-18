@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "audit_date": "2026-09-15",
+  "audit_date": "2026-09-16",
   "selected_protocol": {
     "id": "draft-ietf-moq-transport-18",
     "draft": 18,
@@ -33,8 +33,8 @@
     "repository": "https://github.com/openmoq/moqx.git",
     "commit": "502b6b8f9ddbf4e61f5efe41e92a3d1df40df3a6",
     "moxygen_commit": "70d28f5e796018efb0f5138d538ac7388df72f4c",
-    "selected_for_protocol_claims": false,
-    "reason": "Source audit found cache/fan-out/metrics and opt-in draft-18 code paths, but its own default and documented support remain drafts 14/16. No local draft-18 relay media-path smoke has passed."
+    "selected_for_protocol_claims": true,
+    "reason": "Pinned local build passed strict draft-18 raw-QUIC P1 and P2 relay media-path smokes. Its published documentation still lags runtime draft-18 support; the saved negotiation evidence is authoritative for these local claims."
   },
   "features": {
     "raw_quic": {
@@ -65,16 +65,16 @@
       "notes": "Initial priority is source/API verified. It is not evidence of a relay scheduling result."
     },
     "request_update": {
-      "status": "wire_only",
-      "native_mapping": "aiomoqt.messages.request.RequestUpdate",
-      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p2"],
-      "notes": "Serializer/parser exist, but no public, conformant sender on an existing draft-18 request bidi stream was found."
+      "status": "smoke_verified",
+      "native_mapping": "aiomoqt_d18_update.send_subscriber_priority_update; aiomoqt.messages.request.RequestUpdate",
+      "evidence": ["docs/P2_REQUEST_UPDATE_AUDIT.md", "tests/test_aiomoqt_d18_update.py", "results/P2/run_20260916T031350Z_f799275a/summary.json", "results/P2/run_20260916T033223Z_006c52fa/summary.json"],
+      "notes": "Project-local wrapper serializes a fresh-ID REQUEST_UPDATE on the established draft-18 request bidi stream. Both directional isolated-relay smokes received two REQUEST_OK responses with payload integrity."
     },
     "subscriber_priority": {
-      "status": "wire_only",
-      "native_mapping": "ParamType.SUBSCRIBER_PRIORITY",
-      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p2"],
-      "notes": "Initial SUBSCRIBE priority is exposed; dynamic REQUEST_UPDATE priority is not runnable."
+      "status": "smoke_verified",
+      "native_mapping": "ParamType.SUBSCRIBER_PRIORITY; aiomoqt_d18_update.send_subscriber_priority_update",
+      "evidence": ["docs/P2_REQUEST_UPDATE_AUDIT.md", "results/P2/run_20260916T030458Z_e5f3236b/summary.json", "results/P2/run_20260916T030726Z_4e3c836e/summary.json", "results/P2/run_20260916T031350Z_f799275a/summary.json", "results/P2/run_20260916T033223Z_006c52fa/summary.json"],
+      "notes": "Static controls demonstrated priority symmetry under the isolated bottleneck; both directional dynamic updates were acknowledged and observed at the receiver."
     },
     "object_delivery_timeout": {
       "status": "wire_only",
@@ -106,14 +106,14 @@
       "notes": "Public method and draft-18 serializer/parser exist; no draft-18 relay joining-FETCH smoke is saved."
     },
     "relay_p1_smoke": {
-      "status": "unverified",
-      "evidence": ["docs/RELAY_AUDIT.md"],
-      "notes": "Requires a pinned local relay handshake plus 10 deterministic Group pub/sub/payload smoke."
+      "status": "smoke_verified",
+      "evidence": ["docs/RELAY_AUDIT.md", "results/P1/run_20260915T165233Z_13673576/summary.json"],
+      "notes": "Pinned moqx 502b6b8f9ddbf4e61f5efe41e92a3d1df40df3a6 passed one publisher/one subscriber/one Track/ten deterministic Groups over raw QUIC with moqt-18 on both sessions; payload integrity, IDs, and relay log were saved."
     },
     "relay_p2_smoke": {
-      "status": "blocked",
-      "evidence": ["docs/AIOMOQT_API_AUDIT.md#p2"],
-      "notes": "Blocked by missing conformant aiomoqt REQUEST_UPDATE sender."
+      "status": "smoke_verified",
+      "evidence": ["docs/P2_REQUEST_UPDATE_AUDIT.md", "results/P2/run_20260916T030328Z_40620409/summary.json", "results/P2/run_20260916T030458Z_e5f3236b/summary.json", "results/P2/run_20260916T030726Z_4e3c836e/summary.json", "results/P2/run_20260916T031350Z_f799275a/summary.json", "results/P2/run_20260916T033223Z_006c52fa/summary.json"],
+      "notes": "Isolated relay->subscriber 19.2 Mbps path passed equal and asymmetric static controls plus A->B and B->A native REQUEST_UPDATE smokes. One earlier reverse attempt is preserved as invalid harness evidence; the response-registration race was fixed and the rerun passed."
     },
     "relay_p3_smoke": {
       "status": "blocked",

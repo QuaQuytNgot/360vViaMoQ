@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="430" viewBox="0 0 720 430">
+<rect width="100%" height="100%" fill="white"/>
+<text x="60" y="30" font-size="18">Track count vs weakest-track goodput (bps)</text>
+<line x1="60" y1="370" x2="660" y2="370" stroke="black"/>
+<line x1="60" y1="60" x2="60" y2="370" stroke="black"/>
+<text x="60" y="412" font-size="12">tracks 1–24</text>
+<text x="530" y="412" font-size="12">value 9.43e+05–2.27e+07</text>
+<polyline fill="none" stroke="#1f77b4" stroke-width="2" points="60.0,60.0 86.1,221.7 138.3,302.6 242.6,343.0 451.3,363.2 660.0,370.0"/>
+<text x="530" y="55" fill="#1f77b4" font-size="12">weakest goodput</text>
+</svg>

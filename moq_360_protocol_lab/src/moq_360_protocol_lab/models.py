@@ -66,6 +66,8 @@ class ObjectDelivery:
     complete_receive_ts_ns: Optional[int] = None
     payload_bytes: int = 0
     completed: bool = False
+    missing: bool = False
+    duplicate: bool = False
     dropped: bool = False
     expired: bool = False
     reset: bool = False

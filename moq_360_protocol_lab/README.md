@@ -13,16 +13,14 @@ versioned baseline, not “latest MOQT”.
 
 ## Current research state
 
-`aiomoqt==0.10.6` and `aiopquic==0.3.11` are the primary pinned stack. Its
-released draft-18 loopback tests passed in an isolated audit environment, but
-this repository has **not selected a research relay**. The audited `moqx`
-candidate is deliberately unselected because its draft-18 support has not
-passed a local raw-QUIC handshake and P1 media-path smoke.
+`aiomoqt==0.10.6` and `aiopquic==0.3.11` are the primary pinned stack.  The
+audited `moqx` candidate at `502b6b8f9ddbf4e61f5efe41e92a3d1df40df3a6` is
+qualified for native P1 after an exact raw-QUIC draft-18 probe and 1-/4-Track
+media-path smokes.  Its listener is explicitly `moqt_versions: [18]` and
+`quic.max_bidi_streams: 64`; the latter is required for the 24-Track case.
 
-Consequently, the framework can safely create deterministic synthetic plans
-and reject a bad live negotiation, but no P1–P5 protocol experiment is marked
-runnable yet. This is intentional: a missing proof produces a saved
-`SKIPPED_UNVERIFIED` or `ABORTED_PROTOCOL_NEGOTIATION` result, never an
+Only P1 has this evidence. A missing proof for another mechanism produces a
+saved `SKIPPED_UNVERIFIED` or `ABORTED_PROTOCOL_NEGOTIATION` result, never an
 approximation.
 
 - [Architecture and claim rules](docs/DESIGN.md)
@@ -43,7 +41,7 @@ src/moq_360_protocol_lab/
 configs/
   experiment.yaml
   capabilities.example.json
-  relay.moqx.draft18.example.yaml  # candidate-only configuration
+  relay.moqx.draft18.example.yaml  # qualified local P1 relay configuration
 scripts/
   install.sh, install_relay.sh, start_relay.sh, stop_relay.sh, probe_relay.sh
   run_test.sh, run_sweep.sh, netem.sh, reset_netem.sh
@@ -105,12 +103,45 @@ are independently verified.
 ## Relay and network safety
 
 `scripts/install_relay.sh` is dry-run by default and pins the audited `moqx`
-candidate source commit. It does not turn that candidate into a selected
-research relay. `start_relay.sh` accepts only an explicit binary and YAML
-configuration. The YAML must constrain the listener to `moqt_versions: [18]`.
+source commit. `start_relay.sh` accepts only an explicit binary and YAML
+configuration. The YAML constrains the local listener to `moqt_versions: [18]`.
 
 `netem.sh` is dry-run by default; `--apply` changes a named interface. It
 models outbound one-way delay unless both directions are shaped and recorded.
+
+## Native P1 execution (after relay qualification)
+
+`Moqt18P1Adapter` is the P1-only native path.  It creates independent
+aiomoqt publisher and subscriber sessions, offers only draft 18 over raw QUIC,
+and sends deterministic identity-carrying Objects as one subgroup stream per
+Group.  It does not use a Python queue as a data path.
+
+The two live templates are deliberately not runnable until the relay is
+built and started.  First run the 10-Group smoke:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m moq_360_protocol_lab.p1_runner \
+  --config configs/p1.smoke.draft18.yaml
+```
+
+It saves publisher/subscriber negotiation JSON separately, event logs,
+publisher/subscriber CSV, `groups.csv`, a relay-log copy, provenance, and a
+summary under `results/P1/run_*`.  The capability ledger remains unchanged by
+this command; promote `relay_p1_smoke` only after reviewing a valid smoke
+result.  Then generate reviewed, constant-aggregate cases and run each one:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m moq_360_protocol_lab.p1_matrix \
+  --baseline configs/p1.baseline.draft18.yaml --output-dir configs/generated/P1 \
+  --track-counts 1 2 4 8 16 24
+PYTHONPATH=src .venv/bin/python -m moq_360_protocol_lab.p1_analysis
+```
+
+The matrix reads `workload.total_offered_bitrate_mbps` from the reviewed
+baseline and distributes it with integer remainder accounting; it contains no
+embedded offered-rate research constant.  `p1_analysis` produces a compact
+table and four intentionally simple SVG plots from valid `p1_measurement`
+rows only; smoke rows remain in the raw CSV evidence.
 
 ## Result validity
 
