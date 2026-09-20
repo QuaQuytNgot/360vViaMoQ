@@ -6,11 +6,11 @@ application-level approximation.
 
 | Test | Question | Required observations | Gate today |
 |---|---|---|---|
-| P1 | Does splitting equivalent aggregate traffic across independent Tracks create completion skew or unfairness? | per-Track/aggregate goodput, weak track, Group/Object completion, skew, p50/p95/p99, deadline misses | `relay_p1_smoke` unverified |
-| P2 | How quickly does a native priority update affect media scheduling? | generated/sent/response/effective/first-new-priority timestamps | public conformant `REQUEST_UPDATE` absent |
-| P3 | How does native MOQT delivery lifetime differ from the media deadline? | completed/expired/reset/useful/stale bytes, skew, deadline misses | native object+subgroup timeout behavior absent |
-| P4 | Can verified Forward/cache/fan-out reduce useful-object latency and duplicate upstream data? | first useful object/Group, pre-demand/wasted bytes, cache/reuse/link bytes, fan-out | P2/client API and relay evidence absent |
-| P5 | What is the behavior of live subscribe, FETCH, and Joining Fetch? | first object/useful Group, pre-live-edge bytes, catch-up and live-edge latency | optional; draft-18 relay smoke absent |
+| P1 | Does splitting equivalent aggregate traffic across independent Tracks create completion skew or unfairness? | per-Track/aggregate goodput, weak track, Group/Object completion, skew, p50/p95/p99, deadline misses | complete |
+| P2 | How quickly does a native priority update affect media scheduling? | generated/sent/response/effective/first-new-priority timestamps | core complete; extended sweep incomplete |
+| P3 | How does native MOQT delivery lifetime differ from the media deadline? | completed/expired/reset/useful/stale bytes, skew, deadline misses | partial; current implementation limits documented |
+| P4 | Can verified Forward/cache/fan-out reduce useful-object latency and duplicate upstream data? | first useful object/Group, pre-demand/wasted bytes, cache/reuse/link bytes, fan-out | P4A/B/D complete; P4C blocked by current relay |
+| P5 | What is the behavior of live subscribe, FETCH, and Joining Fetch? | first Object/complete Group, historical/redundant bytes, continuity and live-edge delay | native Standalone and Relative Joining FETCH smokes pass; controlled P5A/P5B pending root execution |
 
 ## Core invariants
 
@@ -28,13 +28,29 @@ Only these small checks are appropriate now:
 
 | Smoke | Procedure | Current result |
 |---|---|---|
-| A | strict draft-18 raw-QUIC handshake | aiomoqt released-source loopback coverage passed; no selected real relay probe saved |
-| B | one publisher, one subscriber, one Track, ten deterministic Groups; verify sequence and payload, clean close | not run — requires selected relay |
-| C | four synthetic Tracks at equal priority | not run — depends on B |
-| D | one priority swap with P2-native support | not run/blocked — no conformant public sender |
+| A | strict draft-18 raw-QUIC handshake | passed against pinned moqx |
+| B | one publisher, one subscriber, one Track, ten deterministic Groups; verify sequence and payload, clean close | passed; post-P5 regression also passed |
+| C | four synthetic Tracks at equal priority | passed in P1 qualification |
+| D | one priority swap with P2-native support | passed; see `P2_COMPLETION_AUDIT.md` |
+| P5-S1 | native Standalone Fetch for a retained complete Group | passed |
+| P5-S2 | native Relative Joining Fetch plus live transition | passed |
 
 Do not run bandwidth/loss/RTT sweeps until these are saved against a pinned
 real relay.
+
+## P5 gate and matrix
+
+P5-S1 and P5-S2 are documented in
+[P5_FETCH_AUDIT.md](P5_FETCH_AUDIT.md). They prove native relay-mediated
+Standalone Fetch and Relative Joining Fetch semantics with deterministic
+payload validation. They are localhost semantic smokes, not P5A/P5B network
+measurements.
+
+The controlled matrix reuses the `moq-p2-pub`, `moq-p2-relay`, and
+`moq-p2-sub` namespaces. `run_p5_matrix.sh` executes serially and stops on the
+first failed or invalid run. P5A contains 1 Track × 3 modes × 5 offsets × 3
+repetitions. P5B contains 4 Tracks × 3 modes × 3 offsets × 3 repetitions.
+Exact setup and cleanup commands are in [P5_RESULTS.md](P5_RESULTS.md).
 
 ## Status meanings
 

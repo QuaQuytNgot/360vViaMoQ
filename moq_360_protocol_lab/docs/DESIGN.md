@@ -72,28 +72,27 @@ with `aiopquic==0.3.11` and Python 3.12+. Focused released-source draft-18
 loopback tests passed (15 tests); details and source symbols are in
 [AIOMOQT_API_AUDIT.md](AIOMOQT_API_AUDIT.md).
 
-P1 has source/API support for raw-QUIC publish/subscribe and subgroup/object
-handling, but lacks a pinned real-relay ten-Group media-path smoke. P2 is
-blocked: `REQUEST_UPDATE` is codec-supported but not publicly sendable on the
-existing request bidi stream required by draft-18. P3 is blocked: no public
-native timeout configuration/action/observation covers both object and
-subgroup timeouts. P4 is blocked: it needs P2 plus verified relay Forward,
-cache/reuse, and fan-out behavior. P5 is optional and remains blocked pending
-a draft-18 FETCH/Joining Fetch relay smoke.
+The repository now contains validated native evidence for P1, P2, and the
+supported P4 cases. P3 remains a partial characterization because the current
+implementation does not expose every timeout behavior; P4C is blocked by the
+current relay. P5 has passed native Standalone and Relative Joining FETCH
+semantic smokes. Its controlled single-/multi-Track matrices remain pending
+because this session cannot enter the root-owned network namespaces. See
+[P5_FETCH_AUDIT.md](P5_FETCH_AUDIT.md).
 
-The [relay audit](RELAY_AUDIT.md) intentionally selects no relay. The moqx
-source candidate has a fixed audit commit but remains unselected because its
-own defaults/documentation make draft-18 incomplete/unproven locally.
+The original [relay audit](RELAY_AUDIT.md) records the selection process. The
+subsequent P1–P5 evidence uses moqx at the fixed commit shown above with
+explicit draft-18-only configuration; no relay default is treated as proof.
 
 ## P1–P5 experiment boundary
 
 | Test | Purpose | Native prerequisite | Current state |
 |---|---|---|---|
-| P1 | multi-Track scheduling and completion skew | raw-QUIC P1 pub/sub/10-Group relay smoke | blocked pending relay smoke |
-| P2 | priority change reaction | conformant `REQUEST_UPDATE` and scheduling observations | blocked in client API |
-| P3 | object/subgroup delivery lifetime | native configuration plus expiry/reset observations | blocked in client API/behavior |
-| P4 | Forward, pre-warm, and multi-user fan-out | P2 plus relay Forward/cache/fan-out evidence | blocked |
-| P5 | live subscribe, FETCH, Joining Fetch | raw-QUIC draft-18 relay smoke | optional, blocked |
+| P1 | multi-Track scheduling and completion skew | raw-QUIC P1 pub/sub/relay smoke | complete |
+| P2 | priority change reaction | conformant `REQUEST_UPDATE` and scheduling observations | core complete |
+| P3 | object/subgroup delivery lifetime | native configuration plus expiry/reset observations | partial; implementation-limited |
+| P4 | Forward, pre-warm, and multi-user fan-out | relay Forward/cache/fan-out evidence | P4A/B/D complete; P4C relay-blocked |
+| P5 | live subscribe, FETCH, Joining Fetch | raw-QUIC draft-18 relay smoke | native smokes complete; controlled matrices pending root |
 
 The former T1–T9 matrix is retired; the project does not silently map a P test
 to a different old mechanism.

@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "scope": "local_repository_evidence_only",
+  "generated_without_new_experiments": true,
+  "evidence_accounting": {
+    "valid_research_runs": 33,
+    "valid_research_run_definition": "valid_for_protocol_claim=true and part of a controlled measurement series or its valid control; excludes localhost semantic smokes and P4 validation-incomplete exploratory runs",
+    "semantic_only_smoke_runs": 8,
+    "semantic_only_smoke_run_ids": [
+      "run_20260915T165233Z_13673576",
+      "run_20260915T165508Z_5c231a94",
+      "run_20260918T144558Z_59eb51a4",
+      "run_20260918T143858Z_52655231",
+      "run_20260918T143916Z_54554a8f",
+      "run_20260918T144631Z_8f93c62d",
+      "run_20260918T144854Z_dc6eac7e",
+      "run_20260918T145044Z_e32007ea"
+    ],
+    "invalid_preserved_runs": 20,
+    "invalid_preserved_definition": "summary.json has valid_for_protocol_claim=false and status COMPLETED_INVALID; excludes one COMPLETED_SYNTHETIC harness run",
+    "invalid_preserved_run_ids": [
+      "run_20260915T165541Z_d2e68928",
+      "run_20260916T030824Z_9a3e098f",
+      "run_20260916T032859Z_1ae8e3b5",
+      "run_20260916T042629Z_6b52ee91",
+      "run_20260916T144012Z_6ba2b02e",
+      "run_20260916T144021Z_ae3effae",
+      "run_20260916T144030Z_80006c63",
+      "run_20260916T144039Z_5d6a381e",
+      "run_20260916T144048Z_b77a0984",
+      "run_20260916T144057Z_88013469",
+      "run_20260916T144105Z_08727ea7",
+      "run_20260916T144114Z_17d1e19d",
+      "run_20260916T144123Z_6a8e0c55",
+      "run_20260916T144132Z_685cd5ec",
+      "run_20260916T144141Z_4fa2bb39",
+      "run_20260916T144150Z_1a742f9a",
+      "run_20260916T145016Z_97f5d149",
+      "run_20260916T145027Z_9cc21d0f",
+      "run_20260916T145038Z_c618066e",
+      "run_20260918T143738Z_97313525"
+    ],
+    "exploratory_runs_excluded_from_research_count": 4,
+    "exploratory_run_ids": ["run_20260916T061926Z_d12e8bb6", "run_20260916T061942Z_2a73d61a", "run_20260916T061959Z_e04fd06e", "run_20260916T062016Z_7a83ae3a"],
+    "synthetic_harness_only_runs": 1,
+    "synthetic_harness_only_run_ids": ["run_20260915T035842Z_66b1dd01"],
+    "incomplete_run_directories_without_summary": 5,
+    "incomplete_run_ids": ["run_20260915T165118Z_0bdbd5f8", "run_20260915T165158Z_29155eb2", "run_20260915T165337Z_2789bd6e", "run_20260915T170133Z_17130da9", "run_20260916T025846Z_3b911771"]
+  },
+  "environment": {
+    "stored_run_platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+    "kernel": "6.8.0-138-generic",
+    "architecture": "x86_64",
+    "hostname": "filpc",
+    "cpu_model": null,
+    "cpu_model_status": "not_captured_in_run_provenance",
+    "memory_total_kib": 16207276,
+    "physical_nic": null,
+    "physical_nic_status": "not_captured_and_not_used_as_the_shaped_path",
+    "gpu": "NVIDIA GeForce GTX 1660",
+    "gpu_driver": "595.91.07",
+    "clock": "time.monotonic_ns",
+    "evidence": [
+      "results/P1/run_20260915T165654Z_b1c69629/provenance.json",
+      "results/P5/run_20260918T144854Z_dc6eac7e/provenance.json"
+    ]
+  },
+  "protocol": {
+    "draft": "draft-ietf-moq-transport-18",
+    "selected_draft": 18,
+    "transport": "raw_quic",
+    "alpn": "moqt-18",
+    "endpoint": "aiomoqt",
+    "aiomoqt_version": "0.10.6",
+    "aiopquic_version": "0.3.11",
+    "python": "3.14.6 | packaged by Anaconda, Inc. | GCC 14.3.0",
+    "relay": "OpenMOQ moqx",
+    "relay_version": "v0.3.5-15-g502b6b8f",
+    "relay_commit": "502b6b8f9ddbf4e61f5efe41e92a3d1df40df3a6",
+    "repository_commits_observed": [
+      "4b6797f04eee1d883a755a7f758dcc20ee6b89f6",
+      "9300fad74e127f67fd814c44f852122255710637"
+    ],
+    "repository_dirty_in_provenance": true,
+    "relay_quic_max_bidi_streams": {
+      "original_default": 16,
+      "configured": 64,
+      "classification": "configuration_limit",
+      "reason": "the endpoint opens one client-initiated bidirectional request stream per Track; the first 24-Track attempt stopped at the seventeenth SUBSCRIBE"
+    },
+    "evidence": [
+      "docs/RELAY_AUDIT.md",
+      "configs/relay.moqx.draft18.example.yaml",
+      "results/P1/run_20260915T165654Z_b1c69629/provenance.json",
+      "results/P5/run_20260918T144854Z_dc6eac7e/provenance.json"
+    ]
+  },
+  "topologies": {
+    "unconstrained_loopback": {
+      "tests": ["P1"],
+      "bandwidth_mbps": null,
+      "rtt_ms": null,
+      "loss_percent": null,
+      "jitter_ms": null
+    },
+    "controlled_netns": {
+      "tests": ["P2", "P3", "P4"],
+      "namespaces": ["moq-p2-pub", "moq-p2-relay", "moq-p2-sub"],
+      "links": "veth_pairs",
+      "shaper": "tc/qdisc_on_relay_egress_p2rels0",
+      "P2_P3": {"capacity_mbps": 19.2, "rtt_ms": 5, "loss_percent": 0, "jitter_ms": 0},
+      "P4": {"capacity_mbps": 100, "rtt_ms": 40, "loss_percent": 0, "jitter_ms": 0}
+    },
+    "localhost_semantic_smoke": {
+      "tests": ["P1", "P5"],
+      "performance_claim_supported": false
+    }
+  },
+  "synthetic_media_model": {
+    "logical_mapping": {"tile_or_logical_stream": "Track", "media_or_gop_interval": "Group", "temporal_payload_unit": "Object"},
+    "pacing": "wall_clock_live",
+    "identity": ["track_id", "group_id", "object_id"],
+    "payload_validation": "deterministic_identity_carrying_payload",
+    "excluded_system_components": ["codec", "FFmpeg", "disk_IO", "decoder", "keyframe_dependencies"]
+  },
+  "tests": {
+    "P1": {
+      "status": "COMPLETE_BASELINE",
+      "valid_research_runs": 6,
+      "repetitions_per_configuration": 1,
+      "topology": "unconstrained_loopback",
+      "workload": {"offered_load_mbps": 24, "group_duration_ms": 1000, "group_count": 30, "objects_per_group": 1},
+      "measurements": [
+        {"run_id":"run_20260915T165654Z_b1c69629","track_count":1,"aggregate_goodput_bps":22657054.473235678,"weakest_track_goodput_bps":22657054.473235678,"median_completion_latency_ms":41.2519095,"p95_completion_latency_ms":73.36889515,"median_skew_ms":0.0,"p95_skew_ms":0.0,"group_completion_ratio":1.0,"deadline_miss_ratio":0.0,"valid":true},
+        {"run_id":"run_20260915T165751Z_8504fe17","track_count":2,"aggregate_goodput_bps":22657064.665933196,"weakest_track_goodput_bps":11328532.332966598,"median_completion_latency_ms":33.215405,"p95_completion_latency_ms":66.91318549999998,"median_skew_ms":6.3173825,"p95_skew_ms":6.973447099999998,"group_completion_ratio":1.0,"deadline_miss_ratio":0.0,"valid":true},
+        {"run_id":"run_20260915T165844Z_292bc7d6","track_count":4,"aggregate_goodput_bps":22654069.31304429,"weakest_track_goodput_bps":5663517.328261073,"median_completion_latency_ms":27.8731085,"p95_completion_latency_ms":258.69758695,"median_skew_ms":12.848714,"p95_skew_ms":16.852976050000002,"group_completion_ratio":1.0,"deadline_miss_ratio":0.0,"valid":true},
+        {"run_id":"run_20260915T165936Z_7bf1811d","track_count":8,"aggregate_goodput_bps":22653637.900331274,"weakest_track_goodput_bps":2831704.737541409,"median_completion_latency_ms":25.4368385,"p95_completion_latency_ms":225.64280344999995,"median_skew_ms":12.817213,"p95_skew_ms":17.67596475,"group_completion_ratio":1.0,"deadline_miss_ratio":0.0,"valid":true},
+        {"run_id":"run_20260915T170035Z_10ef35a0","track_count":16,"aggregate_goodput_bps":22658072.876407307,"weakest_track_goodput_bps":1416129.5547754567,"median_completion_latency_ms":24.601605,"p95_completion_latency_ms":219.87175554999996,"median_skew_ms":11.487964,"p95_skew_ms":20.5561547,"group_completion_ratio":1.0,"deadline_miss_ratio":0.0,"valid":true},
+        {"run_id":"run_20260915T170520Z_00ca2719","track_count":24,"aggregate_goodput_bps":22624746.905542772,"weakest_track_goodput_bps":942697.7877309489,"median_completion_latency_ms":26.211428,"p95_completion_latency_ms":224.16274224999995,"median_skew_ms":11.9511055,"p95_skew_ms":34.966752949999965,"group_completion_ratio":1.0,"deadline_miss_ratio":0.0,"valid":true}
+      ],
+      "limitations": ["one_repetition_per_track_count", "unshaped_loopback", "synthetic_media_no_codec"]
+    },
+    "P2": {
+      "status": "COMPLETE_CORE",
+      "extended_status": "INCOMPLETE",
+      "valid_research_runs": 8,
+      "workload": {"track_count":2,"offered_load_mbps":24,"capacity_mbps":19.2,"rtt_ms":5,"loss_percent":0,"jitter_ms":0,"group_duration_ms":1000,"group_count":12,"objects_per_group":20,"object_cadence_ms":50,"switch_at_ms":5000,"rolling_window_ms":500,"dominance_threshold":0.7},
+      "static_priority": [
+        {"run_id":"run_20260916T030328Z_40620409","mode":"equal","track_a_median_ms":2037.208876,"track_b_median_ms":2037.971093,"track_p95_ms":"unsupported_not_stored_per_track","integrity":"480/480"},
+        {"run_id":"run_20260916T030458Z_e5f3236b","mode":"a_high","track_a_median_ms":56.5048205,"track_a_p95_ms_reported_rounded":98.9,"track_b_median_ms":4596.838864,"track_b_p95_ms_reported_rounded":6030.0,"integrity":"480/480"},
+        {"run_id":"run_20260916T030537Z_840a7a11","mode":"b_high","track_a_median_ms":4597.237526,"track_b_median_ms":53.944717,"track_p95_ms":"unsupported_not_selected_in_audit","integrity":"480/480"},
+        {"run_id":"run_20260916T030726Z_4e3c836e","mode":"b_high","track_a_median_ms":4624.4206395,"track_a_p95_ms_reported_rounded":6080.0,"track_b_median_ms":56.780414,"track_b_p95_ms_reported_rounded":106.4,"integrity":"480/480"}
+      ],
+      "dynamic_priority": [
+        {"run_id":"run_20260916T031350Z_f799275a","direction":"A_to_B","ack_latencies_ms":[25.627834,28.31243],"ack_median_ms_recomputed":26.970132,"first_effect_ms":34.837094,"stable_reaction_bound_ms":500,"stale_objects":141,"stale_bytes":10575000,"first_post_switch_window_new_high_share":0.9333,"out_of_order_objects":49,"integrity":"480/480"},
+        {"run_id":"run_20260916T035447Z_942d19b5","direction":"A_to_B","ack_latencies_ms":[26.716665,28.19943],"ack_median_ms":27.4580475,"first_effect_ms":36.27577,"stable_reaction_bound_ms":500,"stale_objects":141,"stale_bytes":10575000,"first_post_switch_window_new_high_share":0.9333,"out_of_order_objects":49,"integrity":"480/480"},
+        {"run_id":"run_20260916T035558Z_6dc3294e","direction":"A_to_B","ack_latencies_ms":[17.112785,20.04383],"ack_median_ms":18.5783075,"first_effect_ms":52.949978,"stable_reaction_bound_ms":500,"stale_objects":141,"stale_bytes":10575000,"first_post_switch_window_new_high_share":0.9333,"out_of_order_objects":50,"integrity":"480/480"},
+        {"run_id":"run_20260916T033223Z_006c52fa","direction":"B_to_A","ack_latencies_ms":[21.227891,20.545836],"ack_median_ms":20.8868635,"first_effect_ms":8.369572,"stable_reaction_bound_ms":500,"stale_objects":140,"stale_bytes":10500000,"first_post_switch_window_new_high_share":0.9333,"out_of_order_objects":50,"integrity":"480/480"}
+      ],
+      "direct_relay_scheduler_timestamp": "not_run"
+    },
+    "P3": {
+      "status": "CHARACTERIZATION_CONCLUDED_PARTIAL",
+      "P3A_status": "NATIVE_PATH_CONFIRMED_BUT_MEASUREMENT_BLOCKED_BY_RELAY_RESOURCE_ERROR",
+      "P3B_status": "BLOCKED_UNIMPLEMENTED_NATIVE_BEHAVIOR",
+      "workload": {"track_count":8,"offered_load_mbps":24,"capacity_mbps":19.2,"rtt_ms":5,"group_duration_ms":1000,"group_count":8,"objects_per_group":20,"object_cadence_ms":50},
+      "control": {"run_id":"run_20260916T042601Z_03a5a93d","expected_objects":1280,"received_objects":1280,"native_timeout_resets":0,"valid":true},
+      "object_timeout": {"run_id":"run_20260916T042629Z_6b52ee91","timeout_ms":50,"expected_objects":1280,"received_objects":1277,"missing_objects":3,"native_delivery_timeout_resets":2,"valid":false,"invalid_reason":["Failed to create uni stream","CrossExecFilter beginSubgroup failed"]},
+      "subgroup_timeout": {"run_id":null,"result":"not_run","support":"unsupported","blocker":"moxygen declares key 0x06 but effective timeout lookup and timer behavior exist only for Object timeout key 0x02"}
+    },
+    "P4": {
+      "P4A": {
+        "status":"COMPLETE",
+        "valid_research_runs":12,
+        "workload":{"track_count":1,"offered_load_mbps":1,"capacity_mbps":100,"rtt_ms":40,"group_duration_ms":500,"group_count":12,"objects_per_group":5},
+        "valid_run_ids":["run_20260916T144435Z_3042d38f","run_20260916T144444Z_b4061565","run_20260916T144453Z_2129e340","run_20260916T144501Z_c3a9aee0","run_20260916T144510Z_2b47511f","run_20260916T144519Z_82b3d69b","run_20260916T144528Z_868d5d7e","run_20260916T144537Z_3f17ffc4","run_20260916T144546Z_c066a736","run_20260916T144555Z_f8b85f6c","run_20260916T144603Z_1cc39ecb","run_20260916T144612Z_1872e4a7"],
+        "forward_1_initial":[
+          {"run_id":"run_20260916T144435Z_3042d38f","downstream_payload_bytes":250000,"downstream_wire_bytes":262837},
+          {"run_id":"run_20260916T144444Z_b4061565","downstream_payload_bytes":250000,"downstream_wire_bytes":262753},
+          {"run_id":"run_20260916T144453Z_2129e340","downstream_payload_bytes":250000,"downstream_wire_bytes":262753}
+        ],
+        "forward_0_initial":[
+          {"run_id":"run_20260916T144501Z_c3a9aee0","downstream_payload_bytes":0,"downstream_wire_bytes":4220},
+          {"run_id":"run_20260916T144510Z_2b47511f","downstream_payload_bytes":0,"downstream_wire_bytes":4263},
+          {"run_id":"run_20260916T144519Z_82b3d69b","downstream_payload_bytes":0,"downstream_wire_bytes":4265}
+        ],
+        "forward_0_to_1":[
+          {"run_id":"run_20260916T144528Z_868d5d7e","request_ok_ms":40.849255,"first_object_ms":58.176353,"first_complete_group_ms":582.387124,"objects_after_ack":19,"bytes_after_ack":237500,"downstream_wire_bytes":249585},
+          {"run_id":"run_20260916T144537Z_3f17ffc4","request_ok_ms":40.814166,"first_object_ms":58.297379,"first_complete_group_ms":581.455852,"objects_after_ack":19,"bytes_after_ack":237500,"downstream_wire_bytes":249627},
+          {"run_id":"run_20260916T144546Z_c066a736","request_ok_ms":40.8162,"first_object_ms":58.993526,"first_complete_group_ms":582.707473,"objects_after_ack":19,"bytes_after_ack":237500,"downstream_wire_bytes":249707}
+        ],
+        "forward_1_to_0":[
+          {"run_id":"run_20260916T144555Z_f8b85f6c","request_ok_ms":41.885053,"signed_last_object_minus_ack_ms":7.045322,"objects_after_ack":3,"bytes_after_ack":37500,"downstream_wire_bytes":236980},
+          {"run_id":"run_20260916T144603Z_1cc39ecb","request_ok_ms":41.994284,"signed_last_object_minus_ack_ms":9.741104,"objects_after_ack":4,"bytes_after_ack":50000,"downstream_wire_bytes":249822},
+          {"run_id":"run_20260916T144612Z_1872e4a7","request_ok_ms":41.077096,"signed_last_object_minus_ack_ms":-482.277318,"objects_after_ack":0,"bytes_after_ack":0,"downstream_wire_bytes":198261}
+        ]
+      },
+      "P4B": {
+        "status":"PARTIAL_REACTIVE_ONLY_DORMANT_RESULTS_ABSENT",
+        "workload":{"track_count":8,"demanded_tracks":4,"offered_load_mbps":8,"capacity_mbps":100,"rtt_ms":40,"group_duration_ms":500,"group_count":16,"objects_per_group":5,"demand_at_ms":1500},
+        "reactive_runs":[
+          {"run_id":"run_20260916T145422Z_81cdad7f","first_object_ms":42.766243,"first_complete_group_ms":164.857026},
+          {"run_id":"run_20260916T145433Z_e07e4ef3","first_object_ms":543.074426,"first_complete_group_ms":717.623791},
+          {"run_id":"run_20260916T145444Z_f684e719","first_object_ms":42.588751,"first_complete_group_ms":164.084662}
+        ],
+        "reactive_statistics":{"first_object_ms":{"median":42.766243,"min":42.588751,"max":543.074426,"mean":209.47647333333333,"population_stddev":235.889385649851},"first_complete_group_ms":{"median":164.857026,"min":164.084662,"max":717.623791,"mean":348.8551596666667,"population_stddev":260.7589905489129}},
+        "dormant_runs":[],
+        "dormant_result":"not_run_or_artifacts_absent",
+        "viewport_activation_metric":"unsupported_in_reactive_summary"
+      },
+      "P4C": {"status":"BLOCKED_BY_CURRENT_RELAY","result":"not_run","reason":"current moqx upstream Forward policy does not retain inactive-demand upstream flow as a prewarm mechanism"},
+      "P4D": {
+        "status":"COMPLETE",
+        "valid_research_runs":3,
+        "users":2,
+        "track_sets":{"user_a":["track_0","track_1","track_2","track_3"],"user_b":["track_2","track_3","track_4","track_5"]},
+        "overlap_percent":50,
+        "membership_reuse_factor":1.3333333333333333,
+        "runs":[
+          {"run_id":"run_20260916T145056Z_df7aa83b","publisher_to_relay_payload_bytes":8000000,"publisher_to_relay_wire_bytes":8265007,"relay_to_users_payload_bytes":1687500,"relay_to_users_wire_bytes":1748759,"upstream_amplification":1.8366682222222221,"subscribe_request_ok_ms":[41.726538,41.007849],"forward_update_latency":"not_applicable","integrity":"pass"},
+          {"run_id":"run_20260916T145107Z_0eea6fb0","publisher_to_relay_payload_bytes":8000000,"publisher_to_relay_wire_bytes":8268170,"relay_to_users_payload_bytes":1750000,"relay_to_users_wire_bytes":1813241,"upstream_amplification":1.837371111111111,"subscribe_request_ok_ms":[42.64722,41.567033],"forward_update_latency":"not_applicable","integrity":"pass"},
+          {"run_id":"run_20260916T145118Z_ccbfabd8","publisher_to_relay_payload_bytes":8000000,"publisher_to_relay_wire_bytes":8271069,"relay_to_users_payload_bytes":1962500,"relay_to_users_wire_bytes":2030761,"upstream_amplification":1.8380153333333333,"subscribe_request_ok_ms":[41.700017,40.888818],"forward_update_latency":"not_applicable","integrity":"pass"}
+        ]
+      }
+    },
+    "P5": {
+      "status":"NATIVE_SEMANTICS_COMPLETE_CONTROLLED_MATRIX_PENDING_ROOT",
+      "workload":{"track_count":1,"offered_load_mbps":1,"group_duration_ms":1000,"objects_per_group":40,"object_cadence_ms":25,"join_offset_ms":500},
+      "live":{"status":"NATIVE_SEMANTICS_COMPLETE","direct_standalone_live_only_smoke":"not_run","evidence":"joining FETCH live leg"},
+      "standalone_fetch":{"status":"NATIVE_SEMANTICS_COMPLETE","run_id":"run_20260918T144854Z_dc6eac7e","actual_join_offset_ms":501.065626,"first_object_ms":4.610028,"first_complete_group_ms":25.250747,"historical_objects":40,"historical_bytes":125000,"redundant_bytes":0,"missing_objects":0},
+      "joining_fetch":{"status":"NATIVE_SEMANTICS_COMPLETE","run_id":"run_20260918T145044Z_e32007ea","actual_join_offset_ms":505.409835,"first_object_ms":5.097104,"first_complete_group_ms":470.540106,"fetched_objects":21,"live_objects":19,"historical_bytes":65625,"gaps":0,"duplicates":0,"live_edge_delay_ms":0},
+      "controlled_P5A_P5B_matrix":{"status":"not_run","blocker":"execution_permission_root_required_for_network_namespaces"},
+      "absolute_joining_fetch":"not_run",
+      "first_decodable_frame":"unsupported_synthetic_payload"
+    }
+  },
+  "implementation_limitations": [
+    {"finding":"default max_bidi_streams blocked the seventeenth subscription in the first 24-Track attempt","category":"CONFIGURATION LIMIT","protocol_gap":false},
+    {"finding":"Object-timeout treatment co-occurred with relay unidirectional-stream allocation failures","category":"RESOURCE LIMIT","protocol_gap":false},
+    {"finding":"native Subgroup Delivery Timeout timer/reset behavior is absent in the pinned implementation","category":"IMPLEMENTATION MISSING FEATURE","protocol_gap":false},
+    {"finding":"inactive downstream Forward state does not produce the prewarm policy needed by P4C","category":"IMPLEMENTATION POLICY","protocol_gap":false},
+    {"finding":"controlled P5 namespace matrix requires unavailable root execution","category":"EXECUTION PERMISSION","protocol_gap":false},
+    {"finding":"requestUpdate Session closed messages confined to teardown are warnings, not active-window failures","category":"EXPERIMENT HARNESS","protocol_gap":false}
+  ],
+  "cross_test_observations": [
+    {"observation":"P1 aggregate goodput remained approximately 22.62-22.66 Mbps from 1 through 24 Tracks while P95 skew reached 34.967 ms at 24 Tracks","supporting_tests":["P1"],"implementation_specific":true,"draft_semantic_consequence":false,"confidence":"moderate_single_repetition"},
+    {"observation":"P2 REQUEST_OK acknowledgement and receiver data-plane effect were distinct; ACK medians were 18.578-27.458 ms across the retained dynamic runs while first effects ranged 8.370-52.950 ms","supporting_tests":["P2"],"implementation_specific":true,"draft_semantic_consequence":false,"confidence":"moderate"},
+    {"observation":"Native activation and late-join mechanisms worked, but timing varied by path and repetition, including a 543.074 ms P4 Reactive first-Object outlier and mixed FETCH/live completion in P5","supporting_tests":["P4","P5"],"implementation_specific":true,"draft_semantic_consequence":false,"confidence":"low_to_moderate_due_missing_controlled_P5_and_dormant_P4"}
+  ],
+  "candidate_research_questions": [
+    {"question":"How should correlated multi-Track media completion requirements be represented and scheduled when each Track is an independent subscription?","still_unknown":"behavior under shaped networks, repeated trials, realistic Objects, and other relays","newer_draft_review_needed":true,"literature_review_needed":true},
+    {"question":"Does application demand-change signalling need an observable data-plane effectiveness contract distinct from control acknowledgement?","still_unknown":"scheduler-internal application time, causal bounds, and behavior across update rates and implementations","newer_draft_review_needed":true,"literature_review_needed":true},
+    {"question":"Can retained subscription state, relay cache policy, and Joining Fetch be combined to reduce activation delay without excessive upstream or stale delivery cost?","still_unknown":"Dormant comparison, true inactive-demand prewarm, and controlled late-join matrix","newer_draft_review_needed":true,"literature_review_needed":true}
+  ],
+  "known_metadata_inconsistencies": [
+    "P4 documentation says P4B complete, but no dormant run directory or dormant row exists in results/P4/p4_summary.csv",
+    "run_20260916T031350Z_f799275a summary stores the control-response median as 28.312430 ms although its two request_updates.csv samples have arithmetic median 26.970132 ms",
+    "stored provenance captures only x86_64 for processor and no physical NIC model, so current-host hardware must not be retroactively attributed to historical runs",
+    "five run directories have no summary.json and are not counted as valid or invalid finalized runs"
+  ]
+}

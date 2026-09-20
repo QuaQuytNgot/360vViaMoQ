@@ -13,20 +13,20 @@ versioned baseline, not “latest MOQT”.
 
 ## Current research state
 
-`aiomoqt==0.10.6` and `aiopquic==0.3.11` are the primary pinned stack.  The
-audited `moqx` candidate at `502b6b8f9ddbf4e61f5efe41e92a3d1df40df3a6` is
-qualified for native P1 after an exact raw-QUIC draft-18 probe and 1-/4-Track
-media-path smokes.  Its listener is explicitly `moqt_versions: [18]` and
-`quic.max_bidi_streams: 64`; the latter is required for the 24-Track case.
-
-Only P1 has this evidence. A missing proof for another mechanism produces a
-saved `SKIPPED_UNVERIFIED` or `ABORTED_PROTOCOL_NEGOTIATION` result, never an
-approximation.
+`aiomoqt==0.10.6` and `aiopquic==0.3.11` are the primary pinned stack. The
+selected `moqx` relay is fixed at
+`502b6b8f9ddbf4e61f5efe41e92a3d1df40df3a6`. P1, P2, and the supported P4
+cases have native evidence. P3 is a documented partial characterization and
+P4C is blocked by the current relay. P5 Standalone and Relative Joining FETCH
+semantic smokes now pass; controlled P5A/P5B execution is pending root access
+to the existing network-namespace topology.
 
 - [Architecture and claim rules](docs/DESIGN.md)
 - [Draft-18 mechanism mapping](docs/DRAFT_MAPPING.md)
 - [aiomoqt source/API audit](docs/AIOMOQT_API_AUDIT.md)
 - [Relay candidate audit](docs/RELAY_AUDIT.md)
+- [P5 FETCH/Joining FETCH audit](docs/P5_FETCH_AUDIT.md)
+- [P5 execution status and results](docs/P5_RESULTS.md)
 - [P1–P5 gates and smoke procedure](docs/TESTS.md)
 
 ## Layout
@@ -150,3 +150,21 @@ provenance, result tables, `protocol_negotiation.json`, and `summary.json`.
 `valid_for_protocol_claim` stays false unless exact negotiation, native
 mechanism support, and saved relay evidence all exist. Missing observations are
 represented as missing values, never as zero.
+
+## Native P5 late join/FETCH
+
+P5 keeps the source genuinely live and paced, and compares only native
+draft-18 operations: LATEST_OBJECT live SUBSCRIBE, Standalone Fetch plus live
+SUBSCRIBE, and Relative Joining Fetch. The project-local compatibility adapter
+only corrects aiomoqt 0.10.6's draft-18 FETCH data-stream `vi64`/location-delta
+codec; it does not cache or replay media.
+
+Run the two localhost semantics smokes with:
+
+```bash
+scripts/run_p5_local_smoke.sh --config configs/p5.smoke.fetch.local.draft18.yaml
+scripts/run_p5_local_smoke.sh --config configs/p5.smoke.join.local.draft18.yaml
+```
+
+Controlled P5A/P5B commands, metric definitions, monitoring, and the current
+permission block are recorded in [docs/P5_RESULTS.md](docs/P5_RESULTS.md).
